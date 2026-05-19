@@ -1,0 +1,81 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #003366;
+  --secondary: #00509d;
+  --accent: #ffd60a;
+  --light: #f5f7fb;
+  --dark: #1d1d1d;
+  --white: #ffffff;
+  --shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--light);
+  color: var(--dark);
+  line-height: 1.7;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+header {
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: auto;
+  padding: 18px 30px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: var(--white);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-btn {
+  background: var(--accent);
+}
