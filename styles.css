@@ -80,6 +80,35 @@ header {
   background: var(--accent);
 }
 
+
+/* rest of the styling code */
+
+.section-title {
+  margin: 20px;
+}
+
 h2 {
-   text-align: center;
+  text-align: center;
+  font-size: 4.5em;
+}
+
+.section-title p {
+  text-align: center;
+  font-size: 1.25em;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-around;
+  margin: 10%;
+}
+
+.activity-card {
+  text-align: center;
+  
+}
+
+.card-info h3, .card-info p, .card-info div {
+  text-align: center;
 }
