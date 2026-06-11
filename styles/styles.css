@@ -46,7 +46,6 @@ header {
   max-width: 1200px;
   margin: auto;
   padding: 18px 30px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -118,4 +117,55 @@ h2 {
 
 .card-info h3, .card-info p, .card-info div {
   text-align: center;
+}
+
+/* footer CSS */
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.footer-logo {
+  color: var(--white);
+  font-size: 1.8rem;
+  transition: 0.5s;
+  text-align: center;
+  grid-column: 3/4;
+  grid-row: 1/2;
+}
+
+.footer-logo:hover {
+   color: var(--accent);
+}
+
+footer {
+  background: var(--primary);
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+footer p {
+  color: var(--light);
+  grid-column: 2/5;
+  grid-row: 2/3;
+  text-align: center;
+}
+
+.footer-links {
+  grid-column: 2/5;
+  grid-row: 4/5;
+  text-align: center;
+  margin: 7.5% 0 3% 0;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+  margin: 0 10%;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
 }
