@@ -1,133 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>BYU-I Adventures</title>
-	<link rel="stylesheet" href="styles/styles.css">
-	<script></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outdoor Activities</title>
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-	<header>
-	    <nav class="navbar">
-	        <h1 class="logo">BYU-I Adventures</h1>
-		    <ul class="nav-links">
-			    <li><a href="index.html">Home</a></li>
-			    <li><a href="subsites/outdoor.html">Outdoor</a></li>
-			    <li><a href="subsites/indoor.html">Indoor</a></li>
-			    <li><a href="subsites/food.html">Food</a></li>
-			    <li><a href="subsites/about.html">About</a></li>
-			    <li><a href="subsites/submit.html">Submit</a></li>
-		    </ul>
-	    </nav>
-	</header>
-	<main>
-		<section class="section">
-		    <div class="section-title">
-		        <h2>All Adventures</h2>
-		        <p>Explore indoor, outdoor, and food activities around Rexburg.</p>
-		    </div>
 
-		  <!-- 🔍 SEARCH + FILTER CONTROLS -->
-			<div class="controls">
-			    <input type="text" id="searchInput" placeholder="Search activities..." />
-			    <select id="categoryFilter">
-				    <option value="All">All</option>
-				    <option value="Outdoor">Outdoor</option>
-				    <option value="Indoor">Indoor</option>
-				    <option value="Food">Food</option>
-			    </select>
-			</div>
-			<!-- 🧩 CARDS GO HERE -->
-			<div class="card-grid"></div>
-		</section>
-	</main>
-	<footer>
-		<div class="footer-content">
-		    <h3 class="footer-logo">BYU-I Adventures</h3>
-		    <p>Discover affordable fun around Rexburg.</p>
-		    <div class="footer-links">
-		      <a href="index.html">Home</a>
-		      <a href="subsites/events.html">Events</a>
-		      <a href="subsites/submit.html">Submit</a>
-		    </div>
-		</div>
-	</footer>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">BYU-I Adventures</h1>
 
-<!-- 🔥 FIREBASE + APP LOGIC -->
-<script type="module" defer>
-	import { db } from "./javascript/firebase.js";
-	import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="subsites/outdoor.html">Outdoor</a></li>
+        <li><a href="subsites/indoor.html">Indoor</a></li>
+        <li><a href="subsites/food.html">Food</a></li>
+        <li><a href="subsites/about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
 
-	const container = document.querySelector(".card-grid");
-	const searchInput = document.getElementById("searchInput");
-	const categoryFilter = document.getElementById("categoryFilter");
+  <section class="section">
+    <div class="section-title">
+      <h2>Outdoor Adventures</h2>
+      <p>Explore nature and exciting outdoor spots around Rexburg.</p>
+    </div>
 
-	let activities = [];
+    <div class="card-grid">
 
-	// Load Firebase data
-	async function loadData() {
-		const snapshot = await getDocs(collection(db, "activities"));
+      <div class="activity-card">
+        <img src="images/trail.jpg" alt="Trail">
 
-	    activities = [];
+        <div class="card-info">
+          <span class="tag">Hiking</span>
+          <h3>Nature Trails</h3>
+          <p>Perfect hiking trails with beautiful scenery.</p>
+          <div class="price">Free</div>
+        </div>
+      </div>
 
-	    snapshot.forEach(doc => {
-	      activities.push(doc.data());
-	    });
+      <div class="activity-card">
+        <img src="images/sledding.jpg" alt="Sledding">
 
-	    render(activities);
-	}
+        <div class="card-info">
+          <span class="tag">Winter</span>
+          <h3>Sledding Hills</h3>
+          <p>Popular winter activity for students and families.</p>
+          <div class="price">Free</div>
+        </div>
+      </div>
 
-	  // Render cards
-	function render(data) {
-	    container.innerHTML = "";
+    </div>
+  </section>
+  <footer>
 
-	    if (data.length === 0) {
-	      container.innerHTML = "<p>No activities found.</p>";
-	      return;
-	    }
+    <div class="footer-content">
 
-	    data.forEach(item => {
-	      container.innerHTML += `
-	        <div class="activity-card">
-	          <img src="${item.image}" alt="${item.name}">
-	          <div class="card-info">
-	            <span class="tag">${item.category}</span>
-	            <h3>${item.name}</h3>
-	            <p>${item.description}</p>
-	            <div class="price">${item.price}</div>
-	          </div>
-	        </div>
-	      `;
-	    });
-	}
+      <h3 class="footer-logo">BYU-I Adventures</h3>
 
-	  // Filter + Search
-	function filterData() {
-	    let filtered = [...activities];
+      <p>Discover affordable fun around Rexburg.</p>
 
-	    const category = categoryFilter.value;
-	    const search = searchInput.value.toLowerCase();
+      <div class="footer-links">
+        <a href="../index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="submit.html">Submit</a>
+      </div>
 
-	    if (category !== "All") {
-	      filtered = filtered.filter(a => a.category === category);
-	    }
+    </div>
 
-	    if (search) {
-	      filtered = filtered.filter(a =>
-	        a.name.toLowerCase().includes(search) ||
-	        a.description.toLowerCase().includes(search)
-	      );
-	    }
-
-	    render(filtered);
-	}
-
-	searchInput.addEventListener("input", filterData);
-	categoryFilter.addEventListener("change", filterData);
-
-	loadData();
-</script>
-
+  </footer>
 </body>
 </html>
