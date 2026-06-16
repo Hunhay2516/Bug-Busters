@@ -6,137 +6,127 @@
   <title>BYU-I Adventures</title>
   <link rel="stylesheet" href="styles/styles.css">
 </head>
-
 <body>
+	<header>
+	  <nav class="navbar">
+	    <h1 class="logo">BYU-I Adventures</h1>
 
-<header>
-  <nav class="navbar">
-    <h1 class="logo">BYU-I Adventures</h1>
+	    <ul class="nav-links">
+	      <li><a href="index.html">Home</a></li>
+	      <li><a href="subsites/outdoor.html">Outdoor</a></li>
+	      <li><a href="subsites/indoor.html">Indoor</a></li>
+	      <li><a href="subsites/food.html">Food</a></li>
+	      <li><a href="subsites/about.html">About</a></li>
+	      <li><a href="subsites/submit.html">Submit</a></li>
+	    </ul>
+	  </nav>
+	</header>
+	<main>
+		<section class="section">
+		    <div class="section-title">
+		        <h2>All Adventures</h2>
+		        <p>Explore indoor, outdoor, and food activities around Rexburg.</p>
+		    </div>
 
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="subsites/outdoor.html">Outdoor</a></li>
-      <li><a href="subsites/indoor.html">Indoor</a></li>
-      <li><a href="subsites/food.html">Food</a></li>
-      <li><a href="subsites/about.html">About</a></li>
-      <li><a href="subsites/submit.html">Submit</a></li>
-    </ul>
-  </nav>
-</header>
-
-<section class="section">
-
-  <div class="section-title">
-    <h2>All Adventures</h2>
-    <p>Explore indoor, outdoor, and food activities around Rexburg.</p>
-  </div>
-
-  <!-- 🔍 SEARCH + FILTER CONTROLS -->
-  <div class="controls">
-    <input type="text" id="searchInput" placeholder="Search activities..." />
-
-    <select id="categoryFilter">
-      <option value="All">All</option>
-      <option value="Outdoor">Outdoor</option>
-      <option value="Indoor">Indoor</option>
-      <option value="Food">Food</option>
-    </select>
-  </div>
-
-  <!-- 🧩 CARDS GO HERE -->
-  <div class="card-grid"></div>
-
-</section>
-
-<footer>
-  <div class="footer-content">
-
-    <h3 class="footer-logo">BYU-I Adventures</h3>
-
-    <p>Discover affordable fun around Rexburg.</p>
-
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="subsites/events.html">Events</a>
-      <a href="subsites/submit.html">Submit</a>
-    </div>
-
-  </div>
-</footer>
+		  <!-- 🔍 SEARCH + FILTER CONTROLS -->
+			<div class="controls">
+			    <input type="text" id="searchInput" placeholder="Search activities..." />
+			    <select id="categoryFilter">
+				    <option value="All">All</option>
+				    <option value="Outdoor">Outdoor</option>
+				    <option value="Indoor">Indoor</option>
+				    <option value="Food">Food</option>
+			    </select>
+			</div>
+			<!-- 🧩 CARDS GO HERE -->
+			<div class="card-grid"></div>
+		</section>
+	</main>
+	<footer>
+		<div class="footer-content">
+		    <h3 class="footer-logo">BYU-I Adventures</h3>
+		    <p>Discover affordable fun around Rexburg.</p>
+		    <div class="footer-links">
+		      <a href="index.html">Home</a>
+		      <a href="subsites/events.html">Events</a>
+		      <a href="subsites/submit.html">Submit</a>
+		    </div>
+		</div>
+	</footer>
 
 <!-- 🔥 FIREBASE + APP LOGIC -->
-<script type="module">
-  import { db } from "./firebase.js";
-  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<script type="module" defer>
+	import { db } from "./javascript/firebase.js";
+	import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const container = document.querySelector(".card-grid");
-  const searchInput = document.getElementById("searchInput");
-  const categoryFilter = document.getElementById("categoryFilter");
+	const container = document.querySelector(".card-grid");
+	const searchInput = document.getElementById("searchInput");
+	const categoryFilter = document.getElementById("categoryFilter");
 
-  let activities = [];
+	let activities = [];
 
-  // Load Firebase data
-  async function loadData() {
-    const snapshot = await getDocs(collection(db, "activities"));
+	// Load Firebase data
+	async function loadData() {
+		const snapshot = await getDocs(collection(db, "activities"));
 
-    activities = [];
+	    activities = [];
 
-    snapshot.forEach(doc => {
-      activities.push(doc.data());
-    });
+	    snapshot.forEach(doc => {
+	      activities.push(doc.data());
+	    });
 
-    render(activities);
-  }
+	    render(activities);
+	}
 
-  // Render cards
-  function render(data) {
-    container.innerHTML = "";
+	  // Render cards
+	function render(data) {
+	    container.innerHTML = "";
 
-    if (data.length === 0) {
-      container.innerHTML = "<p>No activities found.</p>";
-      return;
-    }
+	    if (data.length === 0) {
+	      container.innerHTML = "<p>No activities found.</p>";
+	      return;
+	    }
 
-    data.forEach(item => {
-      container.innerHTML += `
-        <div class="activity-card">
-          <img src="${item.image}" alt="${item.name}">
-          <div class="card-info">
-            <span class="tag">${item.category}</span>
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
-            <div class="price">${item.price}</div>
-          </div>
-        </div>
-      `;
-    });
-  }
+	    data.forEach(item => {
+	      container.innerHTML += `
+	        <div class="activity-card">
+	          <img src="${item.image}" alt="${item.name}">
+	          <div class="card-info">
+	            <span class="tag">${item.category}</span>
+	            <h3>${item.name}</h3>
+	            <p>${item.description}</p>
+	            <div class="price">${item.price}</div>
+	          </div>
+	        </div>
+	      `;
+	    });
+	}
 
-  // Filter + Search
-  function filterData() {
-    let filtered = [...activities];
+	  // Filter + Search
+	function filterData() {
+	    let filtered = [...activities];
 
-    const category = categoryFilter.value;
-    const search = searchInput.value.toLowerCase();
+	    const category = categoryFilter.value;
+	    const search = searchInput.value.toLowerCase();
 
-    if (category !== "All") {
-      filtered = filtered.filter(a => a.category === category);
-    }
+	    if (category !== "All") {
+	      filtered = filtered.filter(a => a.category === category);
+	    }
 
-    if (search) {
-      filtered = filtered.filter(a =>
-        a.name.toLowerCase().includes(search) ||
-        a.description.toLowerCase().includes(search)
-      );
-    }
+	    if (search) {
+	      filtered = filtered.filter(a =>
+	        a.name.toLowerCase().includes(search) ||
+	        a.description.toLowerCase().includes(search)
+	      );
+	    }
 
-    render(filtered);
-  }
+	    render(filtered);
+	}
 
-  searchInput.addEventListener("input", filterData);
-  categoryFilter.addEventListener("change", filterData);
+	searchInput.addEventListener("input", filterData);
+	categoryFilter.addEventListener("change", filterData);
 
-  loadData();
+	loadData();
 </script>
 
 </body>
