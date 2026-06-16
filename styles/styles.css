@@ -56,10 +56,11 @@ header {
   font-size: 1.8rem;
   font-weight: 700;
   transition: 0.5s;
+  text-decoration: none;
 }
 
 .logo:hover {
-   transform: scale(1.2);
+   transform: scale(1.1);
    color: var(--accent);
 }
 
@@ -118,6 +119,7 @@ h2 {
 .card-info h3, .card-info p, .card-info div {
   text-align: center;
 }
+
 
 /* footer CSS */
 
