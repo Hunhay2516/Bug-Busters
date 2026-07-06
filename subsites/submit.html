@@ -6,21 +6,24 @@
   <title>Outdoor Activities</title>
   <link rel="stylesheet" href="../styles/styles.css">
 </head>
+
 <body>
 
-    <header>
-    <nav class="navbar">
-        <a href="../index.html" class="logo"><h1 class="logo">BYU-I Adventures</h1></a>
+<header>
+  <nav class="navbar">
+    <a href="../index.html" class="logo">
+      <h1 class="logo">BYU-I Adventures</h1>
+    </a>
 
-        <ul class="nav-links">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="outdoor.html">Outdoor</a></li>
-        <li><a href="indoor.html">Indoor</a></li>
-        <li><a href="food.html">Food</a></li>
-        <li><a href="about.html">About</a></li>
-        </ul>
-    </nav>
-    </header>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="outdoor.html">Outdoor</a></li>
+      <li><a href="indoor.html">Indoor</a></li>
+      <li><a href="food.html">Food</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+</header>
 
 <section class="section">
   <div class="section-title">
@@ -31,16 +34,16 @@
   <form id="activity-form">
 
     <label>Name</label>
-    <input type="text" placeholder="Your Name">
+    <input type="text" id="name" placeholder="Your Name" required>
 
     <label>Activity Name</label>
-    <input type="text" placeholder="Activity Name">
+    <input type="text" id="activityName" placeholder="Activity Name" required>
 
     <label>Description</label>
-    <textarea placeholder="Describe the activity"></textarea>
+    <textarea id="description" placeholder="Describe the activity" required></textarea>
 
     <label>Estimated Cost</label>
-    <input type="text" placeholder="$0 - $20">
+    <input type="text" id="price" placeholder="$0 - $20">
 
     <button type="submit">Submit Activity</button>
 
@@ -49,7 +52,6 @@
 
 <footer>
   <div class="footer-content">
-
     <h3 class="footer-logo">BYU-I Adventures</h3>
 
     <p>Discover affordable fun around Rexburg.</p>
@@ -59,9 +61,67 @@
       <a href="about.html">About</a>
       <a href="submit.html">Submit</a>
     </div>
-
   </div>
 </footer>
+
+<!-- 🔥 FIREBASE CONNECTION -->
+<script type="module">
+import { db, auth } from "../firebase.js";
+
+import { collection, addDoc, serverTimestamp } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+import { onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const form = document.getElementById("activity-form");
+
+let currentUser = null;
+
+// Check login status
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+  } else {
+    alert("You must be logged in to submit an activity.");
+    window.location.href = "../login.html";
+  }
+});
+
+// Submit form
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!currentUser) return;
+
+  const name = document.getElementById("name").value;
+  const activityName = document.getElementById("activityName").value;
+  const description = document.getElementById("description").value;
+  const price = document.getElementById("price").value;
+
+  try {
+    await addDoc(collection(db, "activities"), {
+      name,
+      activityName,
+      description,
+      price,
+      category: "Outdoor",
+
+      userId: currentUser.uid,
+      email: currentUser.email,
+
+      createdAt: serverTimestamp()
+    });
+
+    alert("Activity submitted successfully!");
+    form.reset();
+
+  } catch (error) {
+    console.error("Error adding document:", error);
+    alert("Error submitting activity.");
+  }
+});
+</script>
 
 </body>
 </html>
