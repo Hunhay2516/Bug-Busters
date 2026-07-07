@@ -64,63 +64,43 @@
   </div>
 </footer>
 
-<!-- 🔥 FIREBASE CONNECTION -->
 <script type="module">
-import { db, auth } from "../firebase.js";
+  // Step up one directory explicitly to find firebase.js on GitHub Pages
+  import { db } from "./../firebase.js";
 
-import { collection, addDoc, serverTimestamp } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { collection, addDoc, serverTimestamp } 
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { onAuthStateChanged } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  const form = document.getElementById("activity-form");
 
-const form = document.getElementById("activity-form");
+  // Submit form data to Firestore
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-let currentUser = null;
+    const name = document.getElementById("name").value;
+    const activityName = document.getElementById("activityName").value;
+    const description = document.getElementById("description").value;
+    const price = document.getElementById("price").value;
 
-// Check login status
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    currentUser = user;
-  } else {
-    alert("You must be logged in to submit an activity.");
-    window.location.href = "../login.html";
-  }
-});
+    try {
+      // Sends data straight to your Firestore "activities" collection
+      await addDoc(collection(db, "activities"), {
+        name,
+        activityName,
+        description,
+        price,
+        category: "Outdoor",
+        createdAt: serverTimestamp()
+      });
 
-// Submit form
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+      alert("Activity submitted successfully!");
+      form.reset();
 
-  if (!currentUser) return;
-
-  const name = document.getElementById("name").value;
-  const activityName = document.getElementById("activityName").value;
-  const description = document.getElementById("description").value;
-  const price = document.getElementById("price").value;
-
-  try {
-    await addDoc(collection(db, "activities"), {
-      name,
-      activityName,
-      description,
-      price,
-      category: "Outdoor",
-
-      userId: currentUser.uid,
-      email: currentUser.email,
-
-      createdAt: serverTimestamp()
-    });
-
-    alert("Activity submitted successfully!");
-    form.reset();
-
-  } catch (error) {
-    console.error("Error adding document:", error);
-    alert("Error submitting activity.");
-  }
-});
+    } catch (error) {
+      console.error("Error adding document to Firestore:", error);
+      alert("Error submitting activity. Check the browser console for details.");
+    }
+  });
 </script>
 
 </body>
