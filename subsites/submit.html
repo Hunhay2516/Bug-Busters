@@ -76,8 +76,8 @@
 </footer>
 
 <script type="module">
-  // Step up one directory explicitly to find firebase.js on GitHub Pages
-  import { db } from "./../firebase.js";
+  // 🌟 Cleaned up import path for GitHub Pages subfolder
+  import { db } from "../firebase.js";
 
   import { collection, addDoc, serverTimestamp } 
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
