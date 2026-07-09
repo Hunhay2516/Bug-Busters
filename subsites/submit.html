@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Outdoor Activities</title>
+  <title>Submit an Activity</title>
   <link rel="stylesheet" href="../styles/styles.css">
 </head>
 
@@ -17,10 +17,12 @@
 
     <ul class="nav-links">
       <li><a href="../index.html">Home</a></li>
+      <li><a href="activities.html">All Activities</a></li>
       <li><a href="outdoor.html">Outdoor</a></li>
       <li><a href="indoor.html">Indoor</a></li>
       <li><a href="food.html">Food</a></li>
       <li><a href="about.html">About</a></li>
+      <li><a href="submit.html">Submit</a></li>
     </ul>
   </nav>
 </header>
@@ -33,17 +35,25 @@
 
   <form id="activity-form">
 
-    <label>Name</label>
+    <label for="name">Your Name</label>
     <input type="text" id="name" placeholder="Your Name" required>
 
-    <label>Activity Name</label>
+    <label for="activityName">Activity Name</label>
     <input type="text" id="activityName" placeholder="Activity Name" required>
 
-    <label>Description</label>
+    <label for="category">Category</label>
+    <select id="category" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+      <option value="" disabled selected>Select a Category</option>
+      <option value="Outdoor">Outdoor</option>
+      <option value="Indoor">Indoor</option>
+      <option value="Food">Food</option>
+    </select>
+
+    <label for="description">Description</label>
     <textarea id="description" placeholder="Describe the activity" required></textarea>
 
-    <label>Estimated Cost</label>
-    <input type="text" id="price" placeholder="$0 - $20">
+    <label for="price">Estimated Cost</label>
+    <input type="text" id="price" placeholder="Free or $5 - $20">
 
     <button type="submit">Submit Activity</button>
 
@@ -58,6 +68,7 @@
 
     <div class="footer-links">
       <a href="../index.html">Home</a>
+      <a href="activities.html">All Activities</a>
       <a href="about.html">About</a>
       <a href="submit.html">Submit</a>
     </div>
@@ -79,17 +90,18 @@
 
     const name = document.getElementById("name").value;
     const activityName = document.getElementById("activityName").value;
+    const category = document.getElementById("category").value;
     const description = document.getElementById("description").value;
-    const price = document.getElementById("price").value;
+    const price = document.getElementById("price").value || "Free";
 
     try {
       // Sends data straight to your Firestore "activities" collection
       await addDoc(collection(db, "activities"), {
         name,
         activityName,
+        category,
         description,
         price,
-        category: "Outdoor",
         createdAt: serverTimestamp()
       });
 
