@@ -13,10 +13,12 @@
 
         <ul class="nav-links">
         <li><a href="../index.html">Home</a></li>
+        <li><a href="activities.html">All Activities</a></li>
         <li><a href="outdoor.html">Outdoor</a></li>
         <li><a href="indoor.html">Indoor</a></li>
         <li><a href="food.html">Food</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="submit.html">Submit</a></li>
         </ul>
     </nav>
     </header>
@@ -27,7 +29,7 @@
       <p>Affordable student food spots around Rexburg.</p>
     </div>
 
-    <div class="card-grid">
+    <div class="card-grid" id="food-grid">
 
       <div class="activity-card">
         <img src="https://dynl.mktgcdn.com/p/bUXVfkING3tlDw_9Qjqn43X7lOEdhz52EPRXCmdAp5U/500x500" alt="Pizza">
@@ -39,7 +41,8 @@
           <div class="price">$8</div>
         </div>
       </div>
-    </div>
+
+      </div>
   </section>
 <footer>
   <div class="footer-content">
@@ -50,11 +53,64 @@
 
     <div class="footer-links">
       <a href="../index.html">Home</a>
+      <a href="activities.html">All Activities</a>
       <a href="about.html">About</a>
       <a href="submit.html">Submit</a>
     </div>
 
   </div>
 </footer>
+
+<script type="module">
+  import { db } from "./../firebase.js";
+  import { collection, getDocs, query, where, orderBy } 
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const grid = document.getElementById("food-grid");
+
+  async function loadFoodActivities() {
+    try {
+      // Query Firebase for documents where category == "Food"
+      const q = query(
+        collection(db, "activities"), 
+        where("category", "==", "Food"),
+        orderBy("createdAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        const card = document.createElement("div");
+        card.className = "activity-card";
+
+        // Fallback placeholder image for user food submissions
+        const defaultImg = "https://dynl.mktgcdn.com/p/bUXVfkING3tlDw_9Qjqn43X7lOEdhz52EPRXCmdAp5U/500x500";
+
+        card.innerHTML = `
+          <img src="${defaultImg}" alt="${data.activityName}">
+          <div class="card-info">
+            <span class="tag">Student Submission</span>
+            <h3>${data.activityName}</h3>
+            <p>${data.description}</p>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+              <em>Submitted by ${data.name || "Anonymous"}</em>
+            </p>
+            <div class="price">${data.price || "Free"}</div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error("Error loading food activities:", error);
+    }
+  }
+
+  loadFoodActivities();
+</script>
+
 </body>
 </html>
