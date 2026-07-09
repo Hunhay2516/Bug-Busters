@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Activities - BYU-I Adventures</title>
+  <link rel="stylesheet" href="../styles/styles.css">
+</head>
+
+<body>
+
+<header>
+  <nav class="navbar">
+    <a href="../index.html" class="logo">
+      <h1 class="logo">BYU-I Adventures</h1>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="activities.html">All Activities</a></li>
+      <li><a href="outdoor.html">Outdoor</a></li>
+      <li><a href="indoor.html">Indoor</a></li>
+      <li><a href="food.html">Food</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="submit.html">Submit</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="section">
+  <div class="section-title">
+    <h2>Student Submitted Activities</h2>
+    <p>Check out fun and affordable ideas shared by other BYU-Idaho students!</p>
+  </div>
+
+  <div id="activities-container" style="max-width: 800px; margin: 0 auto; padding: 20px 0;">
+    <p>Loading activities...</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <h3 class="footer-logo">BYU-I Adventures</h3>
+
+    <p>Discover affordable fun around Rexburg.</p>
+
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="submit.html">Submit</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+  // Step up one directory to find firebase.js on GitHub Pages
+  import { db } from "./../firebase.js";
+
+  import { collection, getDocs, query, orderBy } 
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const container = document.getElementById("activities-container");
+
+  async function loadActivities() {
+    try {
+      // 1. Fetch activities ordered by the newest submissions first
+      const q = query(collection(db, "activities"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+
+      // Clear out "Loading activities..."
+      container.innerHTML = "";
+
+      // 2. Handle case where database is empty
+      if (querySnapshot.empty) {
+        container.innerHTML = "<p>No activities submitted yet. Be the first to add one!</p>";
+        return;
+      }
+
+      // 3. Loop through Firestore documents and create cards
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        // Create HTML card container
+        const card = document.createElement("div");
+        
+        // Inline styles for clean layout (or add .activity-card to your styles.css)
+        card.style.background = "#ffffff";
+        card.style.border = "1px solid #e0e0e0";
+        card.style.borderRadius = "8px";
+        card.style.padding = "20px";
+        card.style.marginBottom = "20px";
+        card.style.boxShadow = "0 2px 5px rgba(0,0,0,0.05)";
+
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 style="margin: 0; color: #0066cc;">${data.activityName}</h3>
+            <span style="background: #e6f2ff; color: #0066cc; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: bold;">
+              ${data.category || "General"}
+            </span>
+          </div>
+          
+          <p style="margin: 5px 0 15px 0; color: #555;">${data.description}</p>
+          
+          <div style="font-size: 0.9rem; color: #777; display: flex; justify-content: space-between; border-top: 1px solid #f0f0f0; padding-top: 10px;">
+            <span><strong>Submitted by:</strong> ${data.name || "Anonymous"}</span>
+            <span><strong>Cost:</strong> ${data.price || "Free"}</span>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error("Error loading activities:", error);
+      container.innerHTML = "<p>Error loading activities. Please try refreshing the page.</p>";
+    }
+  }
+
+  // Run the load function on page load
+  loadActivities();
+</script>
+
+</body>
+</html>
