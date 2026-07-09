@@ -14,10 +14,12 @@
 
         <ul class="nav-links">
         <li><a href="../index.html">Home</a></li>
+        <li><a href="activities.html">All Activities</a></li>
         <li><a href="outdoor.html">Outdoor</a></li>
         <li><a href="indoor.html">Indoor</a></li>
         <li><a href="food.html">Food</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="submit.html">Submit</a></li>
         </ul>
     </nav>
     </header>
@@ -28,7 +30,7 @@
             <p>Fun indoor entertainment for students year-round.</p>
         </div>
 
-        <div class="card-grid">
+        <div class="card-grid" id="indoor-grid">
 
             <div class="activity-card">
                 <img src="https://s3-media0.fl.yelpcdn.com/bphoto/l4leTP8lkQAkiAYW6wPcpg/348s.jpg" alt="Bowling">
@@ -52,8 +54,9 @@
                 </div>
             </div>
 
-        </div>
+            </div>
     </section>
+
 <footer>
   <div class="footer-content">
 
@@ -63,11 +66,64 @@
 
     <div class="footer-links">
       <a href="../index.html">Home</a>
+      <a href="activities.html">All Activities</a>
       <a href="about.html">About</a>
       <a href="submit.html">Submit</a>
     </div>
 
   </div>
 </footer>
+
+<script type="module">
+  import { db } from "./../firebase.js";
+  import { collection, getDocs, query, where, orderBy } 
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const grid = document.getElementById("indoor-grid");
+
+  async function loadIndoorActivities() {
+    try {
+      // Query Firebase for documents where category == "Indoor"
+      const q = query(
+        collection(db, "activities"), 
+        where("category", "==", "Indoor"),
+        orderBy("createdAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        const card = document.createElement("div");
+        card.className = "activity-card";
+
+        // Fallback placeholder image for user submissions
+        const defaultImg = "https://totallyboise.com/Portals/0/Images/IndoorActivitiesWahooz.jpg";
+
+        card.innerHTML = `
+          <img src="${defaultImg}" alt="${data.activityName}">
+          <div class="card-info">
+            <span class="tag">Student Submission</span>
+            <h3>${data.activityName}</h3>
+            <p>${data.description}</p>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+              <em>Submitted by ${data.name || "Anonymous"}</em>
+            </p>
+            <div class="price">${data.price || "Free"}</div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error("Error loading indoor activities:", error);
+    }
+  }
+
+  loadIndoorActivities();
+</script>
+
 </body>
 </html>
