@@ -14,10 +14,12 @@
 
         <ul class="nav-links">
         <li><a href="../index.html">Home</a></li>
+        <li><a href="activities.html">All Activities</a></li>
         <li><a href="outdoor.html">Outdoor</a></li>
         <li><a href="indoor.html">Indoor</a></li>
         <li><a href="food.html">Food</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="submit.html">Submit</a></li>
         </ul>
     </nav>
     </header>
@@ -28,7 +30,7 @@
             <p>Explore nature and exciting outdoor spots around Rexburg.</p>
         </div>
 
-        <div class="card-grid">
+        <div class="card-grid" id="outdoor-grid">
 
             <div class="activity-card">
                 <img src="https://t3.ftcdn.net/jpg/06/23/49/10/360_F_623491006_8THGbPv1rlNcxKeiF84yPl4MOlogx4mC.jpg" alt="Trail">
@@ -85,8 +87,9 @@
                 </div>
             </div>
 
-        </div>
+            </div>
     </section>
+
 <footer>
   <div class="footer-content">
 
@@ -96,11 +99,65 @@
 
     <div class="footer-links">
       <a href="../index.html">Home</a>
+      <a href="activities.html">All Activities</a>
       <a href="about.html">About</a>
       <a href="submit.html">Submit</a>
     </div>
 
   </div>
 </footer>
+
+<script type="module">
+  import { db } from "./../firebase.js";
+  import { collection, getDocs, query, where, orderBy } 
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const grid = document.getElementById("outdoor-grid");
+
+  async function loadOutdoorActivities() {
+    try {
+      // Query Firebase for documents where category == "Outdoor"
+      const q = query(
+        collection(db, "activities"), 
+        where("category", "==", "Outdoor"),
+        orderBy("createdAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        // Create a new activity card matching your existing style
+        const card = document.createElement("div");
+        card.className = "activity-card";
+
+        // Fallback image if user submission doesn't include one
+        const defaultImg = "https://t3.ftcdn.net/jpg/06/23/49/10/360_F_623491006_8THGbPv1rlNcxKeiF84yPl4MOlogx4mC.jpg";
+
+        card.innerHTML = `
+          <img src="${defaultImg}" alt="${data.activityName}">
+          <div class="card-info">
+            <span class="tag">Student Submission</span>
+            <h3>${data.activityName}</h3>
+            <p>${data.description}</p>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+              <em>Submitted by ${data.name || "Anonymous"}</em>
+            </p>
+            <div class="price">${data.price || "Free"}</div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error("Error loading outdoor activities:", error);
+    }
+  }
+
+  loadOutdoorActivities();
+</script>
+
 </body>
 </html>
