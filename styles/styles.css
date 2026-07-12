@@ -170,13 +170,14 @@ footer p {
   grid-row: 4/5;
   text-align: center;
   margin: 7.5% 0 3% 0;
+  display: flex;
+  justify-content: space-around;
 }
 
 .footer-links a {
   color: white;
   text-decoration: none;
   transition: 0.3s;
-  margin: 0 10%;
 }
 
 .footer-links a:hover {
@@ -209,4 +210,30 @@ footer p {
 #activity-form button:hover {
   background-color: var(--accent);
   color: var(--dark)
+}
+
+@media (max-width: 700px) {
+  .footer-links {
+  flex-direction: column;
+  align-items: space-around;
+  }
+  .footer-links a {
+    padding: 5px;
+  }
+  .navbar {
+    flex-wrap: wrap;
+    margin-right: 0;
+  }
+  .navlinks {
+    justify-content: end;
+  }
+  .non-mobile {
+    display: none;
+  }
+  .hero h2 {
+    font-size: 2rem;
+  }
+  .section h2 {
+    font-size: 2rem;
+  }
 }
