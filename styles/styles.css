@@ -93,12 +93,6 @@ header {
   letter-spacing: 0.01em;
 }
 
-.logo::after {
-  content: '·';
-  color: var(--blue);
-  margin-left: 4px;
-}
-
 .nav-links {
   display: flex;
   list-style: none;
