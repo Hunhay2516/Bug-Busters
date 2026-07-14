@@ -83,25 +83,25 @@
         
         // Inline styles for clean layout
         card.style.background = "#ffffff";
-        card.style.border = "1px solid #e0e0e0";
-        card.style.borderRadius = "8px";
+        card.style.border = "1px solid #ddd3b8";
+        card.style.borderRadius = "2px";
         card.style.padding = "20px";
         card.style.marginBottom = "20px";
-        card.style.boxShadow = "0 2px 5px rgba(0,0,0,0.05)";
+        card.style.boxShadow = "0 10px 24px rgba(28,43,30,0.12)";
 
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h3 style="margin: 0; color: #0066cc;">${data.activityName}</h3>
-            <span style="background: #e6f2ff; color: #0066cc; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: bold;">
+            <h3 style="margin: 0; color: #1c2b1e; font-family: 'Fraunces', serif;">${data.activityName}</h3>
+            <span style="background: #b85c38; color: #f7f3e8; padding: 4px 12px; border-radius: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;">
               ${data.category || "General"}
             </span>
           </div>
           
-          <p style="margin: 5px 0 15px 0; color: #555;">${data.description}</p>
+          <p style="margin: 5px 0 15px 0; color: #1c2b1e; opacity: 0.8;">${data.description}</p>
           
-          <div style="font-size: 0.9rem; color: #777; display: flex; justify-content: space-between; border-top: 1px solid #f0f0f0; padding-top: 10px;">
-            <span><strong>Submitted by:</strong> ${data.name || "Anonymous"}</span>
-            <span><strong>Cost:</strong> ${data.price || "Free"}</span>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: #3e5c74; display: flex; justify-content: space-between; border-top: 1px solid #ddd3b8; padding-top: 10px;">
+            <span>Submitted by: ${data.name || "Anonymous"}</span>
+            <span>${data.price || "Free"}</span>
           </div>
         `;
 
