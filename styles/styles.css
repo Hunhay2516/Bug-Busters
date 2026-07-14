@@ -137,7 +137,7 @@ header {
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Cg fill='none' stroke='%234F9ACF' stroke-width='1' opacity='0.9'%3E%3Cpath d='M-30,60 C90,10 190,110 310,60 C380,32 460,60 540,60'/%3E%3Cpath d='M-30,95 C90,50 190,145 310,95 C380,68 460,95 540,95' stroke-width='1.4'/%3E%3Cpath d='M-30,135 C90,95 190,180 310,135 C380,108 460,135 540,135'/%3E%3Cpath d='M-30,180 C90,145 190,220 310,180 C380,155 460,180 540,180' stroke-width='1.6' stroke='%23006EB6'/%3E%3Cpath d='M-30,225 C90,195 190,265 310,225 C380,200 460,225 540,225'/%3E%3Cpath d='M-30,270 C90,245 190,310 310,270 C380,248 460,270 540,270'/%3E%3Cpath d='M-30,315 C90,290 190,355 310,315 C380,295 460,315 540,315' stroke-width='1.4'/%3E%3Cpath d='M-30,360 C90,340 190,400 310,360 C380,342 460,360 540,360'/%3E%3Cpath d='M-30,405 C90,388 190,440 310,405 C380,390 460,405 540,405'/%3E%3Cpath d='M-30,445 C90,432 190,470 310,445 C380,434 460,445 540,445' stroke-width='1.4' stroke='%23006EB6'/%3E%3C/g%3E%3C/svg%3E");
   background-size: cover, cover, 480px 480px;
   background-position: center, center, center;
-  min-height: 80vh;
+  min-height: 90vh;
   width: 100%;
   padding: 40px 20px;
   text-align: center;
